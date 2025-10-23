@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <changeSet id="1" author="kishor">
+        <sql>
+            CREATE TABLE IF NOT EXISTS user
+            (
+            id integer NOT NULL,
+            firstname character varying(20),
+            lastname character varying(20),
+            username character varying(20),
+            password character varying(2000),
+            email character varying(25),
+            mobile_no bigint,
+            CONSTRAINT user_pk PRIMARY KEY (id)
+            )
+        </sql>
+    </changeSet>
+    <changeSet id="1" author="kishor">
+        <sql>
+            CREATE TABLE IF NOT EXISTS artist
+            (
+            id integer NOT NULL,
+            firstname character varying(20),
+            lastname character varying(20),
+            username character varying(20),
+            password character varying(2000),
+            email character varying(25),
+            mobile_no bigint,
+            bio character varying(500),
+            CONSTRAINT artist_pk PRIMARY KEY (id)
+            )
+        </sql>
+    </changeSet>
+
+    <changeSet id="4" author="kishor">
+        <sql>
+            Insert into policy (id, policy_name, policy_desc, updated_by, updated_at, deleted) Values
+            (1, 'GET_USER', 'Get user detail by id', 'system', '2023-08-26', false),
+            (2, 'UPDATE_USER', 'Update user details', 'system', '2023-08-26', false);
+        </sql>
+        <sql>
+            Insert into user_policy (user_id, policy_id, updated_by, updated_at, deleted) Values
+            (1, 1, 'system', '2023-08-26', false);
+        </sql>
+    </changeSet>
+    <changeSet id="5" author="kishor">
+        <sql>
+            Alter table users add column action boolean default true
+        </sql>
+        <sql>
+            Alter table users add column deactivate boolean default true
+        </sql>
+    </changeSet>
+    <changeSet id="6" author="kishor">
+        <sql>
+            Alter table roles add column action boolean default true
+        </sql>
+        <sql>
+            Alter table roles add column deactivate boolean default true
+        </sql>
+        <sql>
+            Alter table policy add column action boolean default true
+        </sql>
+        <sql>
+            Alter table policy add column deactivate boolean default true
+        </sql>
+    </changeSet>
+</databaseChangeLog>

@@ -35,38 +35,54 @@
             )
         </sql>
     </changeSet>
-
-    <changeSet id="4" author="kishor">
+    <changeSet id="1" author="kishor">
         <sql>
-            Insert into policy (id, policy_name, policy_desc, updated_by, updated_at, deleted) Values
-            (1, 'GET_USER', 'Get user detail by id', 'system', '2023-08-26', false),
-            (2, 'UPDATE_USER', 'Update user details', 'system', '2023-08-26', false);
-        </sql>
-        <sql>
-            Insert into user_policy (user_id, policy_id, updated_by, updated_at, deleted) Values
-            (1, 1, 'system', '2023-08-26', false);
-        </sql>
-    </changeSet>
-    <changeSet id="5" author="kishor">
-        <sql>
-            Alter table users add column action boolean default true
-        </sql>
-        <sql>
-            Alter table users add column deactivate boolean default true
+            CREATE TABLE IF NOT EXISTS song
+            (
+            id integer NOT NULL,
+            title character varying(20),
+            fileUrl character varying(20),
+            duration integer NOT NULL,
+            size integer NOT NULL,
+            genreId integer NOT NULL,
+            artistId integer NOT NULL,
+            albumId integer ,
+            actionId integer,
+            CONSTRAINT song_pk PRIMARY KEY (id)
+            )
         </sql>
     </changeSet>
-    <changeSet id="6" author="kishor">
+    <changeSet id="1" author="kishor">
         <sql>
-            Alter table roles add column action boolean default true
+            CREATE TABLE IF NOT EXISTS album
+            (
+            id integer NOT NULL,
+            name character varying(20),
+            releaseDate character varying(20),
+            CONSTRAINT album_pk PRIMARY KEY (id)
+            )
         </sql>
+    </changeSet>
+    <changeSet id="1" author="kishor">
         <sql>
-            Alter table roles add column deactivate boolean default true
+            CREATE TABLE IF NOT EXISTS genre
+            (
+            id integer NOT NULL,
+            name character varying(20),
+            type character varying(20),
+            CONSTRAINT genre_pk PRIMARY KEY (id)
+            )
         </sql>
+    </changeSet>
+    <changeSet id="1" author="kishor">
         <sql>
-            Alter table policy add column action boolean default true
-        </sql>
-        <sql>
-            Alter table policy add column deactivate boolean default true
+            CREATE TABLE IF NOT EXISTS action
+            (
+            id integer NOT NULL,
+            type character varying(20),
+            userId integer NOT NULL,
+            CONSTRAINT action_pk PRIMARY KEY (id)
+            )
         </sql>
     </changeSet>
 </databaseChangeLog>

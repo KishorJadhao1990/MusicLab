@@ -1,33 +1,49 @@
 package com.eao.musiclab.model;
 
-import jakarta.persistence.*;
-import java.util.Set;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+/**
+ * @author kishor
+ * Created on 23/10/2025
+ */
+@Data
 @Entity
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@Table(name = "user", catalog = "musiclab")
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user-seq")
+    @SequenceGenerator(name = "user-seq", sequenceName = "user-seq", allocationSize = 1)
+    private Integer id;
+
+    @Column(name = "firstname")
+    private String firstname;
+
+    @Column(name = "lastname")
+    private String lastname;
+
+    @Column(name = "username")
     private String username;
 
-    @ManyToMany
-    @JoinTable(
-        name = "user_role",
-        joinColumns = @JoinColumn(name = "user_id"),
-        inverseJoinColumns = @JoinColumn(name = "role_id")
-    )
-    private Set<Role> roles;
+    @Column(name = "email")
+    private String email;
 
-    @ManyToMany
-    @JoinTable(
-        name = "user_followed_artist",
-        joinColumns = @JoinColumn(name = "user_id"),
-        inverseJoinColumns = @JoinColumn(name = "artist_id")
-    )
-    private Set<Artist> followedArtists;
+    @Column(name = "mobile_no")
+    private Long mobileNo;
 
-    @OneToMany(mappedBy = "user")
-    private Set<LikeDislike> likeDislikes;
+    @Column(name = "password")
+    private String password;
 
-    // getters and setters
 }

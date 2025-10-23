@@ -1,36 +1,48 @@
 package com.eao.musiclab.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.util.Set;
 
+/**
+ * @author kishor
+ * Created on 23/10/2025
+ */
+@Data
 @Entity
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@Table(name = "artist", catalog = "musiclab")
 public class Artist {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String name;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "artist-seq")
+    @SequenceGenerator(name = "artist-seq", sequenceName = "artist-seq", allocationSize = 1)
+    private Integer id;
 
-    @ManyToMany(mappedBy = "artists")
-    private Set<Song> songs;
+    @Column(name = "firstname")
+    private String firstname;
 
-    @ManyToMany(mappedBy = "artists")
-    private Set<Album> albums;
+    @Column(name = "lastname")
+    private String lastname;
 
-    @ManyToMany
-    @JoinTable(
-        name = "artist_role",
-        joinColumns = @JoinColumn(name = "artist_id"),
-        inverseJoinColumns = @JoinColumn(name = "role_id")
-    )
-    private Set<Role> roles;
+    @Column(name = "username")
+    private String username;
 
-    @ManyToMany
-    @JoinTable(
-        name = "artist_follower",
-        joinColumns = @JoinColumn(name = "artist_id"),
-        inverseJoinColumns = @JoinColumn(name = "user_id")
-    )
-    private Set<User> followers;
+    @Column(name = "email")
+    private String email;
 
-    // getters and setters
+    @Column(name = "mobile_no")
+    private Long mobileNo;
+
+    @Column(name = "password")
+    private String password;
+
+    @Column(name = "bio")
+    private boolean bio;
+
 }

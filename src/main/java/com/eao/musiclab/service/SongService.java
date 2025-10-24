@@ -5,7 +5,7 @@ import com.eao.musiclab.bo.SongBO;
 import java.util.List;
 
 public interface SongService {
-    void save(SongBO songBO);
+    void saveSong(SongBO songBO);
 
     SongBO getSong(String id);
 

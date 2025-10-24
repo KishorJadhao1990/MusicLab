@@ -43,6 +43,6 @@ public class Artist {
     private String password;
 
     @Column(name = "bio")
-    private boolean bio;
+    private String bio;
 
 }

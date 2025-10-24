@@ -17,7 +17,7 @@ public class SongApi {
 
     @PostMapping
     public ResponseEntity<String> createSong(@RequestBody SongBO songBO) {
-        songService.save(songBO);
+        songService.saveSong(songBO);
         return ResponseEntity.ok("Song created successfully.");
     }
 

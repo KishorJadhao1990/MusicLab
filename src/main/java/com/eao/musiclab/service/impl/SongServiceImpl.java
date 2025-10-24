@@ -8,6 +8,7 @@ import com.eao.musiclab.service.SongService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -18,7 +19,7 @@ import java.util.Optional;
 public class SongServiceImpl implements SongService {
 
     @Autowired
-    private ArtistRepository artistRepository;
+    private UserRepository userRepository;
     @Autowired
     private GenreRepository genreRepository;
     @Autowired
@@ -37,7 +38,7 @@ public class SongServiceImpl implements SongService {
         }
         Song song = new Song();
         if (!StringUtils.isEmpty(songBO.getAlbum())) {
-            Optional<Album> existedAlbum = albumRepository.findByAlbum(songBO.getAlbum());
+            Optional<Album> existedAlbum = albumRepository.findByName(songBO.getAlbum());
             if (existedAlbum.isEmpty()) {
                 Album album = Album.builder().name(songBO.getAlbum()).releaseDate(LocalDate.now()).build();
                 Album savedAlbum = albumRepository.save(album);
@@ -46,7 +47,7 @@ public class SongServiceImpl implements SongService {
                 song.setAlbumId(existedAlbum.get().getId());
             }
         }
-        Artist artist = artistRepository.findByUsername(songBO.getArtist());
+        User artist = userRepository.findByUsername(songBO.getArtist());
         song.setArtistId(artist.getId());
         Genre genre = genreRepository.findByName(songBO.getGenre());
         song.setGenreId(genre.getId());
@@ -63,7 +64,11 @@ public class SongServiceImpl implements SongService {
 
     @Override
     public List<SongBO> getSongs() {
-        return songRepository.findAll().stream().map(this::buildFrom).toList();
+        List<Song> allSongs = songRepository.findAll();
+        if (CollectionUtils.isEmpty(allSongs)) {
+            throw new BizException("Artist has no songs in library.");
+        }
+        return allSongs.stream().map(this::buildFrom).toList();
     }
 
     @Override
@@ -88,16 +93,20 @@ public class SongServiceImpl implements SongService {
     }
 
     private SongBO buildFrom(Song song) {
-        Optional<Artist> artistOpt = artistRepository.findById(song.getArtistId());
-        Optional<Action> actionOpt = actionRepository.findById(song.getActionId());
+        Optional<User> artistOpt = userRepository.findById(song.getArtistId());
         Optional<Genre> genreOpt = genreRepository.findById(song.getGenreId());
-        Optional<Album> albumOpt = albumRepository.findById(song.getAlbumId());
-
-        return SongBO.builder().title(song.getTitle()).fileUrl(song.getFileUrl())
-                .album(albumOpt.map(Album::getName).orElse(null))
-                .artist(artistOpt.map(Artist::getFirstname).orElse(null))
+        SongBO songBO = SongBO.builder().title(song.getTitle()).fileUrl(song.getFileUrl())
+                .artist(artistOpt.map(User::getFirstname).orElse(null))
                 .genre(genreOpt.map(Genre::getName).orElse(null))
-                .action(String.valueOf(actionOpt.map(Action::getType).orElse(null)))
                 .duration(song.getDuration()).size(song.getSize()).build();
+        if (Objects.nonNull(song.getActionId())) {
+            Optional<Action> actionOpt = actionRepository.findById(song.getActionId());
+            songBO.setAction(String.valueOf(actionOpt.map(Action::getType).orElse(null)));
+        }
+        if (Objects.nonNull(song.getAlbumId())) {
+            Optional<Album> albumOpt = albumRepository.findById(song.getAlbumId());
+            songBO.setAlbum(String.valueOf(albumOpt.map(Album::getName).orElse(null)));
+        }
+        return songBO;
     }
 }

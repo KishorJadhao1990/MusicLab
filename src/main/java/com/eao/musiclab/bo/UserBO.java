@@ -16,6 +16,8 @@ public class UserBO implements Serializable {
     private String password;
     private String email;
     private Long mobileNo;
+    private String role;
+    private String bio;
 
     public static User from(UserBO bo) {
         return User.builder()
@@ -24,6 +26,8 @@ public class UserBO implements Serializable {
                 .email(bo.email)
                 .username(bo.username)
                 .password(bo.password)
+                .role(bo.role.toUpperCase())
+                .bio(bo.bio)
                 .mobileNo(bo.mobileNo).build();
     }
 
@@ -34,6 +38,8 @@ public class UserBO implements Serializable {
                 .username(user.getUsername())
                 .email(user.getEmail())
                 .mobileNo(user.getMobileNo())
+                .bio(user.getBio())
+                .role(user.getRole().toUpperCase())
                 .build();
     }
 }

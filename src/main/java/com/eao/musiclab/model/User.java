@@ -21,7 +21,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "user", catalog = "musiclab")
+@Table(name = "users", catalog = "musiclab")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user-seq")
@@ -45,5 +45,11 @@ public class User {
 
     @Column(name = "password")
     private String password;
+
+    @Column(name = "bio")
+    private String bio;
+
+    @Column(name = "role")
+    private String role;
 
 }

@@ -13,58 +13,38 @@
             firstname character varying(20),
             lastname character varying(20),
             username character varying(20),
-            password character varying(2000),
-            email character varying(25),
             mobile_no bigint,
-            CONSTRAINT user_pk PRIMARY KEY (id)
+            email character varying(25),
+            password character varying(200),
+            bio character varying(2000),
+            role character varying(20),
+            CONSTRAINT users_pk PRIMARY KEY (id)
             )
         </sql>
-    </changeSet>
-    <changeSet id="2" author="kishor">
-        <sql>
-            CREATE TABLE IF NOT EXISTS artist
-            (
-            id integer NOT NULL,
-            firstname character varying(20),
-            lastname character varying(20),
-            username character varying(20),
-            password character varying(2000),
-            email character varying(25),
-            mobile_no bigint,
-            bio character varying(500),
-            CONSTRAINT artist_pk PRIMARY KEY (id)
-            )
-        </sql>
-    </changeSet>
-    <changeSet id="3" author="kishor">
         <sql>
             CREATE TABLE IF NOT EXISTS song
             (
             id integer NOT NULL,
             title character varying(20),
-            fileUrl character varying(20),
+            file_url character varying(20),
             duration integer NOT NULL,
             size integer NOT NULL,
-            genreId integer NOT NULL,
-            artistId integer NOT NULL,
-            albumId integer ,
-            actionId integer,
+            genre_id integer NOT NULL,
+            artist_id integer NOT NULL,
+            album_id integer ,
+            action_id integer,
             CONSTRAINT song_pk PRIMARY KEY (id)
             )
         </sql>
-    </changeSet>
-    <changeSet id="4" author="kishor">
         <sql>
             CREATE TABLE IF NOT EXISTS album
             (
             id integer NOT NULL,
             name character varying(20),
-            releaseDate character varying(20),
+            release_date character varying(20),
             CONSTRAINT album_pk PRIMARY KEY (id)
             )
         </sql>
-    </changeSet>
-    <changeSet id="5" author="kishor">
         <sql>
             CREATE TABLE IF NOT EXISTS genre
             (
@@ -74,16 +54,57 @@
             CONSTRAINT genre_pk PRIMARY KEY (id)
             )
         </sql>
-    </changeSet>
-    <changeSet id="6" author="kishor">
         <sql>
             CREATE TABLE IF NOT EXISTS action
             (
             id integer NOT NULL,
             type character varying(20),
-            userId integer NOT NULL,
+            user_id integer NOT NULL,
             CONSTRAINT action_pk PRIMARY KEY (id)
             )
+        </sql>
+    </changeSet>
+    <changeSet id="2" author="kishor">
+        <sql>
+            CREATE SEQUENCE IF NOT EXISTS "user-seq"
+            INCREMENT 1
+            START 1
+            MINVALUE 1
+            MAXVALUE 9223372036854775807
+            CACHE 1;
+        </sql>
+        <sql>
+            CREATE SEQUENCE IF NOT EXISTS "song-seq"
+            INCREMENT 1
+            START 1
+            MINVALUE 1
+            MAXVALUE 9223372036854775807
+            CACHE 1;
+        </sql>
+        <sql>
+            CREATE SEQUENCE IF NOT EXISTS "action-seq"
+            INCREMENT 1
+            START 1
+            MINVALUE 1
+            MAXVALUE 9223372036854775807
+            CACHE 1;
+        </sql>
+        <sql>
+            CREATE SEQUENCE IF NOT EXISTS "album-seq"
+            INCREMENT 1
+            START 1
+            MINVALUE 1
+            MAXVALUE 9223372036854775807
+            CACHE 1;
+        </sql>
+    </changeSet>
+    <changeSet id="3" author="kishor">
+        <sql>
+            Insert into genre (id, name, type) Values
+            (1, 'jazz', 'JAZZ'),
+            (2, 'rock', 'ROCK'),
+            (3, 'pop', 'POP'),
+            (4, 'classical', 'CLASSICAL');
         </sql>
     </changeSet>
 </databaseChangeLog>
